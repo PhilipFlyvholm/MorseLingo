@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 
-const codes:{
-    [key: string]: string;
+const codes: {
+  [key: string]: string;
 } = {
   ".-": "A",
   "-...": "B",
@@ -29,6 +29,7 @@ const codes:{
   "-..-": "X",
   "-.--": "Y",
   "--..": "Z",
+  "/": " ",
 };
 
 export default codes;
