@@ -11,10 +11,10 @@ import { Link } from "@nextui-org/link";
 import { link as linkStyles } from "@nextui-org/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
+import Image from "next/image";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { Logo } from "@/components/icons";
 
 export const Navbar = () => {
   return (
@@ -22,8 +22,13 @@ export const Navbar = () => {
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
-            <Logo />
-            <p className="font-bold text-inherit">ACME</p>
+            <Image
+              alt="MorseLingo Logo"
+              height={32}
+              src={"/Mascot_transparent.webp"}
+              width={32}
+            />
+            <p className="font-bold text-inherit">MorseLingo</p>
           </NextLink>
         </NavbarBrand>
         <ul className="hidden lg:flex gap-4 justify-start ml-2">

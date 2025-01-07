@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-import codes from "@/config/morse";
+import { codes } from "@/config/morse";
 
 //Calulated based on "Paris" which is 50 time units
 const standardWordLength = 50;
