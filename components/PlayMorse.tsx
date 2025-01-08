@@ -1,9 +1,11 @@
+"use client";
 import { useCallback, useEffect, useState } from "react";
+import { Button } from "@nextui-org/button";
+import { Icon } from "@iconify/react";
 
 import { useAudio } from "./hooks/Audio";
 
 import { ditSound, dahSound, convertToMorse } from "@/config/morse";
-
 interface PlayMorseProps {
   text: string;
   speed?: number;
@@ -62,15 +64,20 @@ export default function PlayMorse({
   );
 
   const playMorse = () => {
-    if (playing) return;
+    if (playing) {
+      setPlaying(false);
+
+      return;
+    }
     setPlaying(true);
     setIndex(0);
     playCurrent(0);
   };
 
   const handleEnd = useCallback(() => {
+    if (!playing) return;
     playCurrent(index);
-  }, [playCurrent, index]);
+  }, [playCurrent, index, playing]);
 
   useEffect(() => {
     setMorse(convertToMorse(text));
@@ -87,12 +94,21 @@ export default function PlayMorse({
   }, [ditAudio, dahAudio, handleEnd]);
 
   return (
-    <button
+    <Button
+      isIconOnly
       aria-label={`Play Morse Code of ${text}`}
+      color="primary"
       disabled={playing}
-      onClick={playMorse}
+      variant="flat"
+      onPress={playMorse}
     >
-      {playing ? "Playing..." : "Play"}
-    </button>
+      <Icon
+        icon={
+          !playing || index % 3 < 2
+            ? "streamline:volume-level-high"
+            : "streamline:volume-level-low"
+        }
+      />
+    </Button>
   );
 }

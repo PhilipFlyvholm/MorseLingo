@@ -3,9 +3,12 @@ import { Button } from "@nextui-org/button";
 import { useEffect, useState } from "react";
 
 import { convertToMorse } from "../../config/morse";
-type MatchExerciseProps = {
+
+import { BaseExerciseData, ExerciseWrapperProps } from "@/types";
+export interface MatchExerciseData extends BaseExerciseData {
+  type: "match";
   expected: string[];
-};
+}
 
 type ButtonColors =
   | "default"
@@ -26,7 +29,11 @@ function shuffleArray<T>(array: T[]): T[] {
   return array;
 }
 
-export default function MatchExercise({ expected }: MatchExerciseProps) {
+type MatchExerciseProps = ExerciseWrapperProps<MatchExerciseData>;
+const MatchExercise: React.FC<MatchExerciseProps> = ({
+  expected,
+  onComplete,
+}: MatchExerciseProps) => {
   const [shuffledWords, setShuffledWords] = useState<string[]>([]);
   const [selected, setSelected] = useState<{ left?: string; right?: string }>(
     {},
@@ -50,6 +57,9 @@ export default function MatchExercise({ expected }: MatchExerciseProps) {
     if (newSelected.left && newSelected.right) {
       if (newSelected.left == newSelected.right) {
         setCorrectWords((v) => [...v, word]);
+        if (correctWords.length + 1 == expected.length) {
+          onComplete();
+        }
       } else {
         const copy = { ...newSelected };
 
@@ -122,4 +132,6 @@ export default function MatchExercise({ expected }: MatchExerciseProps) {
       </div>
     </div>
   );
-}
+};
+
+export default MatchExercise;

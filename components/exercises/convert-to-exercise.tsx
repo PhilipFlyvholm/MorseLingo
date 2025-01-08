@@ -9,12 +9,19 @@ import { InputButton } from "../buttons/InputButton";
 
 import { convertToMorse, dahSound, ditSound } from "@/config/morse";
 import { useAudio } from "@/components/hooks/Audio";
+import { BaseExerciseData, ExerciseWrapperProps } from "@/types";
 
-type ConvertExerciseProps = {
+export interface ConvertToExerciseData extends BaseExerciseData {
+  type: "convert-to";
   expected: string;
-};
+}
 
-export default function ConvertExercise({ expected }: ConvertExerciseProps) {
+type ConvertToProps = ExerciseWrapperProps<ConvertToExerciseData>;
+
+const ConvertToExercise: React.FC<ConvertToProps> = ({
+  expected,
+  onComplete,
+}: ConvertToProps) => {
   const [text, setText] = useState<string>("");
   const [index, setIndex] = useState<number>(0);
   const ditAudio = useAudio(`data:audio/wav;base64,${ditSound}`, {});
@@ -25,9 +32,9 @@ export default function ConvertExercise({ expected }: ConvertExerciseProps) {
     const expectedLetter = expected[index];
     const expectedMorseLetter = convertToMorse(expectedLetter);
 
-    if (newText[newText.length - 1] == expectedMorseLetter) {
-      let nextIndex = index + 1;
+    let nextIndex = index + 1;
 
+    if (newText[newText.length - 1] == expectedMorseLetter) {
       if (nextIndex < expected.length) {
         let nextExpected = convertToMorse(expected[nextIndex]);
 
@@ -47,6 +54,12 @@ export default function ConvertExercise({ expected }: ConvertExerciseProps) {
     setText(newText.join(" "));
     if (type === "dit") ditAudio.play();
     else dahAudio.play();
+
+    if (
+      nextIndex == expected.length &&
+      newText[expected.length - 1] == expectedMorseLetter
+    )
+      onComplete();
   };
 
   const checkDelete = () => {
@@ -64,7 +77,9 @@ export default function ConvertExercise({ expected }: ConvertExerciseProps) {
 
   return (
     <div className="flex flex-col h-full w-full gap-2">
-      <h3 className="font-semibold text-foreground/90">Convert this word:</h3>
+      <h3 className="font-semibold text-foreground/90">
+        Convert this {expected.includes(" ") ? "sentence" : "word"}:
+      </h3>
       <div className="flex gap-2 items-center">
         <Image
           alt="MorseLingo Logo"
@@ -115,4 +130,6 @@ export default function ConvertExercise({ expected }: ConvertExerciseProps) {
       </div>
     </div>
   );
-}
+};
+
+export default ConvertToExercise;

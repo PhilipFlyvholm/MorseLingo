@@ -2,18 +2,26 @@
 
 import { Textarea } from "@nextui-org/input";
 import { useMemo, useState } from "react";
+import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { Divider } from "@nextui-org/divider";
 
 import { InputButton } from "../buttons/InputButton";
 import { useAudio } from "../hooks/Audio";
 import PlayMorse from "../PlayMorse";
 
 import { ditSound, dahSound, convertToMorse } from "@/config/morse";
-
-type LetterExerciseProps = {
+import { BaseExerciseData, ExerciseWrapperProps } from "@/types";
+export interface LetterExerciseData extends BaseExerciseData {
+  type: "letter";
   expected: string;
-};
+}
 
-export function LetterExercise({ expected }: LetterExerciseProps) {
+type LetterExerciseProps = ExerciseWrapperProps<LetterExerciseData>;
+
+const LetterExercise: React.FC<LetterExerciseProps> = ({
+  expected,
+  onComplete,
+}: LetterExerciseProps) => {
   const [text, setText] = useState<string>("");
   const ditAudio = useAudio(`data:audio/wav;base64,${ditSound}`, {});
   const dahAudio = useAudio(`data:audio/wav;base64,${dahSound}`, {});
@@ -44,7 +52,7 @@ export function LetterExercise({ expected }: LetterExerciseProps) {
     const expectedMorseLetter = convertToMorse(expectedLetter);
 
     if (text == expectedMorseLetter) {
-      alert("Correct!");
+      onComplete();
     } else {
       alert("Incorrect!");
     }
@@ -52,13 +60,23 @@ export function LetterExercise({ expected }: LetterExerciseProps) {
 
   return (
     <div className="flex flex-col h-full w-full gap-2">
-      <h3 className="font-semibold text-foreground/90">Convert this letter:</h3>
-      <div className="flex flex-col items-center mb-1">
-        <h2 className="text-3xl font-bold uppercase text-center border-secondary-500 border-5 p-3 rounded-full aspect-square shadow-lg">
-          {expected[0]}
-        </h2>
+      <div className="flex flex-row items-center justify-center mb-1">
+        <Card>
+          <CardHeader>
+            <h3 className="font-semibold text-foreground/90 px-5">
+              Convert this letter:
+            </h3>
+          </CardHeader>
+
+          <Divider />
+          <CardBody className="flex flex-row items-center justify-center gap-3 px-2 py-5">
+            <h2 className="text-3xl font-bold uppercase text-center border-secondary-500 border-5 p-3 w-[4.5rem] h-[4.5rem] rounded-full aspect-square shadow-lg">
+              {expected[0]}
+            </h2>
+            <PlayMorse text={expected[0]} />
+          </CardBody>
+        </Card>
       </div>
-      <PlayMorse text={expected[0]} />
       <Textarea
         isReadOnly
         className="w-full"
@@ -96,4 +114,6 @@ export function LetterExercise({ expected }: LetterExerciseProps) {
       </div>
     </div>
   );
-}
+};
+
+export default LetterExercise;

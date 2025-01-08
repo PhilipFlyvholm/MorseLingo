@@ -5,7 +5,7 @@ type InputButtonProps = {
   onPress: () => void;
   children: React.ReactNode;
   disabled?: boolean;
-  buttonKey: string;
+  buttonKey?: string;
   color?:
     | "default"
     | "primary"
@@ -21,12 +21,14 @@ export function InputButton({
   ...props
 }: InputButtonProps) {
   const handleKeyUp = (event: KeyboardEvent) => {
+    if (props.disabled) return;
     if (event.key == props.buttonKey) {
       props.onPress();
     }
   };
 
   useEffect(() => {
+    if (!props.buttonKey) return;
     window.addEventListener("keyup", handleKeyUp);
 
     return () => {
