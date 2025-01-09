@@ -21,3 +21,10 @@ export type ExerciseData =
 export type ExerciseWrapperProps<T extends ExerciseData> = {
   onComplete: () => void;
 } & T;
+
+export type LessonStorageData = {
+  [key: string]: {
+    //Section-Level-lesson
+    completedLevels: number;
+  };
+};

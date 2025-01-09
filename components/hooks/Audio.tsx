@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef } from "react";
 
 export const useAudio = (src: string, { volume = 1, playbackRate = 1 }) => {

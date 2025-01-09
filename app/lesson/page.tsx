@@ -9,23 +9,35 @@ import { ConvertToExerciseData } from "@/components/exercises/convert-to-exercis
 import { ConvertFromExerciseData } from "@/components/exercises/convert-from-exercise";
 import { LetterExerciseData } from "@/components/exercises/letter-exercise";
 import { MatchExerciseData } from "@/components/exercises/match-exercise";
+import LessonComplete from "@/components/lesson/LessonComplete";
+import { SectionColorName } from "@/config/sections";
 
-type Lesson = ExerciseData[];
-const TEST_LESSON: Lesson = [
-  { type: "convert-to", expected: "Hallo" } as ConvertToExerciseData,
-  {
-    type: "convert-from",
-    expected: "Hallo",
-  } as ConvertFromExerciseData,
-  {
-    type: "match",
-    expected: ["Hallo", "ate", "tea", "sos", "hot"],
-  } as MatchExerciseData,
-  { type: "letter", expected: "E" } as LetterExerciseData,
-];
+type Lesson = {
+  exercises: ExerciseData[];
+  levelNumber: number;
+  lessonNumber: number;
+};
+const TEST_LESSON: Lesson = {
+  levelNumber: 0,
+  lessonNumber: 0,
+  exercises: [
+    { type: "convert-to", expected: "Hallo" } as ConvertToExerciseData,
+    {
+      type: "convert-from",
+      expected: "Hallo",
+    } as ConvertFromExerciseData,
+    {
+      type: "match",
+      expected: ["Hallo", "ate", "tea", "sos", "hot"],
+    } as MatchExerciseData,
+    { type: "letter", expected: "E" } as LetterExerciseData,
+  ],
+};
 
 export default function Lesson() {
   const lesson = TEST_LESSON;
+  const totalLessons: number = 5;
+  const sectionColor: SectionColorName = "purple";
   const [index, setIndex] = useState(0);
 
   const handleComplete = () => {
@@ -34,7 +46,9 @@ export default function Lesson() {
 
   return (
     <section className="flex flex-col h-full w-[90%] md:w-1/2 m-auto gap-5">
-      <LessonProgress value={Math.max(index / lesson.length, 0.1) * 100} />
+      <LessonProgress
+        value={Math.max(index / lesson.exercises.length, 0.1) * 100}
+      />
       <AnimatePresence mode="wait">
         <motion.div
           key={index}
@@ -42,14 +56,20 @@ export default function Lesson() {
           exit={{ opacity: 0, scale: 0 }}
           initial={{ opacity: index == 0 ? 1 : 0, scale: index == 0 ? 1 : 0 }}
         >
-          {index < lesson.length ? (
+          {index < lesson.exercises.length ? (
             <ExerciseFactory
               key={index}
-              {...lesson[index]}
+              {...lesson.exercises[index]}
               onComplete={handleComplete}
             />
           ) : (
-            <h1 key={index}>Lesson complete</h1>
+            <LessonComplete
+              key={index}
+              lessonNumber={lesson.lessonNumber}
+              levelNumber={lesson.levelNumber}
+              sectionColor={sectionColor}
+              totalLessons={totalLessons}
+            />
           )}
         </motion.div>
       </AnimatePresence>
