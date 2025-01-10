@@ -54,7 +54,7 @@ export default function LevelButton({
   const handleLessonClick = () => {
     if (isLocked) return;
     router.push(
-      `/lesson/${sectionNumber}/${levelNumber}/${Math.min(currentLevel + 1, level.length)}`,
+      `/lessons/${sectionNumber}/${levelNumber}/${Math.min(currentLevel + 1, level.length)}`,
     );
   };
 
