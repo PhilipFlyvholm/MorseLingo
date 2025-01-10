@@ -53,9 +53,9 @@ export default function PlayMorse({
       }
 
       if (current === ".") {
-        ditAudio.play();
+        ditAudio?.play();
       } else if (current === "-") {
-        dahAudio.play();
+        dahAudio?.play();
       }
 
       setIndex(currentIndex + 1);
@@ -84,12 +84,12 @@ export default function PlayMorse({
   }, [text]);
 
   useEffect(() => {
-    ditAudio.addEventListener("ended", handleEnd);
-    dahAudio.addEventListener("ended", handleEnd);
+    ditAudio?.addEventListener("ended", handleEnd);
+    dahAudio?.addEventListener("ended", handleEnd);
 
     return () => {
-      ditAudio.removeEventListener("ended", handleEnd);
-      dahAudio.removeEventListener("ended", handleEnd);
+      ditAudio?.removeEventListener("ended", handleEnd);
+      dahAudio?.removeEventListener("ended", handleEnd);
     };
   }, [ditAudio, dahAudio, handleEnd]);
 

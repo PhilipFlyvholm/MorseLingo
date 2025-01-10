@@ -6,6 +6,7 @@ function useLocalStorage<T>(
   initialValue: T,
 ): [T, (value: T) => void] {
   const [state, setState] = useState<T>(() => {
+    if (typeof window === "undefined") return initialValue;
     try {
       const value = window.localStorage.getItem(key);
 
@@ -19,6 +20,7 @@ function useLocalStorage<T>(
   });
 
   const setValue = (value: T) => {
+    if (typeof window === "undefined") return initialValue;
     try {
       window.localStorage.setItem(key, JSON.stringify(value));
       setState(value);

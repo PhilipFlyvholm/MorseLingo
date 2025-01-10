@@ -9,19 +9,19 @@ import { sectionColors } from "@/config/sections";
 import useLocalStorage from "@/components/hooks/LocalStorage";
 import { LessonStorageData } from "@/types";
 
-type LessonButtonProps = {
+type LevelButtonProps = {
   level: Level;
   levelNumber: number;
   sectionColor: keyof typeof sectionColors;
   sectionNumber: number;
 };
 
-export default function LessonButton({
+export default function LevelButton({
   level,
   levelNumber,
   sectionColor,
   sectionNumber,
-}: LessonButtonProps) {
+}: LevelButtonProps) {
   const router = useRouter();
   const [lessonStorage] = useLocalStorage<LessonStorageData>(
     "lessonStorage",
@@ -62,10 +62,9 @@ export default function LessonButton({
     <div
       className="flex justify-center"
       style={{
-        transform: `translateX(${Math.sin((levelNumber - 1) * 5) * 25}px)`,
+        transform: `translateX(${(sectionNumber % 2 == 0 ? 1 : -1) * Math.sin((levelNumber - (sectionNumber+1)) * 5) * 25}px)`,
       }}
     >
-      {currentLevel}
       <LessonIndicator
         animateProgress={false}
         isButton={true}

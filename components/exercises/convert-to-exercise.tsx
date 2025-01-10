@@ -52,8 +52,8 @@ const ConvertToExercise: React.FC<ConvertToProps> = ({
       newText.push("");
     }
     setText(newText.join(" "));
-    if (type === "dit") ditAudio.play();
-    else dahAudio.play();
+    if (type === "dit") ditAudio?.play();
+    else dahAudio?.play();
 
     if (
       nextIndex == expected.length &&

@@ -30,8 +30,8 @@ const LetterExercise: React.FC<LetterExerciseProps> = ({
     const newText = (text + (type === "dit" ? "." : "-")).split(" ");
 
     setText(newText.join(" "));
-    if (type === "dit") ditAudio.play();
-    else dahAudio.play();
+    if (type === "dit") ditAudio?.play();
+    else dahAudio?.play();
   };
 
   const checkDelete = () => {
