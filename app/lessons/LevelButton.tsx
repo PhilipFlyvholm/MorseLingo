@@ -67,7 +67,6 @@ export default function LevelButton({
         transform: `translateX(${(sectionNumber % 2 == 0 ? 1 : -1) * Math.sin((levelNumber - (sectionNumber + 1)) * 5) * 25}px)`,
       }}
     >
-      {isLocked ? "true" : "false"}
       <LessonIndicator
         animateProgress={false}
         isButton={true}

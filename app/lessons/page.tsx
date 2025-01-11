@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
 
@@ -6,6 +8,10 @@ import LevelButton from "./LevelButton";
 import { getSectionColor, sectionColors } from "@/config/sections";
 import course from "@/config/course";
 import { Section as SectionData } from "@/config/course/types";
+
+export const metadata: Metadata = {
+  title: "Lessons",
+};
 
 interface SectionProps {
   id: number;

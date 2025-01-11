@@ -1,7 +1,24 @@
+import { Metadata } from "next";
+
 import LessonView from "./LessonView";
 
 import { getSectionColor } from "@/config/sections";
 import course from "@/config/course";
+
+type MetaDataProps = {
+  params: Promise<{ identifier: number[] }>;
+};
+
+export async function generateMetadata({
+  params,
+}: MetaDataProps): Promise<Metadata> {
+  const identifier = await params;
+  const [sectionNumber, levelNumber, lessonNumber] = identifier.identifier;
+
+  return {
+    title: `Lesson ${lessonNumber} - Level ${levelNumber} - Section ${sectionNumber}`,
+  };
+}
 
 export default async function Lesson({
   params,
