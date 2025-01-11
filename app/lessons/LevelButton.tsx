@@ -8,6 +8,7 @@ import { Level } from "@/config/course/types";
 import { sectionColors } from "@/config/sections";
 import useLocalStorage from "@/components/hooks/LocalStorage";
 import { LessonStorageData } from "@/types";
+import course from "@/config/course";
 
 type LevelButtonProps = {
   level: Level;
@@ -25,28 +26,29 @@ export default function LevelButton({
   const router = useRouter();
   const [lessonStorage] = useLocalStorage<LessonStorageData>(
     "lessonStorage",
-    {},
+    {}
   );
   const [isLocked, setIsLocked] = useState(true);
-  const [currentLevel, setCurrentLevel] = useState(0);
+  const [currentLesson, setCurrentLessons] = useState<number>(0);
 
   useEffect(() => {
-    const currentLesson = 1;
-    const prevKey =
-      currentLesson == 1
-        ? `${sectionNumber}-${levelNumber - 1}`
-        : `${sectionNumber}-${levelNumber}`;
+    const currentLesson =
+      Number(
+        lessonStorage[`${sectionNumber}-${levelNumber}`]?.completedLevels
+      ) || 0;
 
-    //-${course[sectionNumber - 1][levelNumber - 1].length}
-    setCurrentLevel(
-      lessonStorage[`${sectionNumber}-${levelNumber}`]?.completedLevels || 0,
-    );
-    const completedLevels = lessonStorage[prevKey]?.completedLevels || 0;
-    const locked =
-      (levelNumber !== 1 && Number(completedLevels) < level.length) ||
-      !lessonStorage;
+    setCurrentLessons(currentLesson);
+    const prevKey = `${sectionNumber}-${levelNumber - 1}`;
 
-    console.log(locked, Number(completedLevels), levelNumber);
+    if (levelNumber === 1) {
+      setIsLocked(false);
+
+      return;
+    }
+    const prevLevelAmount = course[sectionNumber - 1][levelNumber - 2].length;
+
+    const prevCompletedLevels = lessonStorage[prevKey]?.completedLevels || 0;
+    const locked = prevCompletedLevels < prevLevelAmount || !lessonStorage;
 
     setIsLocked(locked);
   }, [lessonStorage, levelNumber, sectionNumber, level]);
@@ -54,7 +56,7 @@ export default function LevelButton({
   const handleLessonClick = () => {
     if (isLocked) return;
     router.push(
-      `/lessons/${sectionNumber}/${levelNumber}/${Math.min(currentLevel + 1, level.length)}`,
+      `/lessons/${sectionNumber}/${levelNumber}/${Math.min(currentLesson + 1, level.length)}`
     );
   };
 
@@ -62,13 +64,14 @@ export default function LevelButton({
     <div
       className="flex justify-center"
       style={{
-        transform: `translateX(${(sectionNumber % 2 == 0 ? 1 : -1) * Math.sin((levelNumber - (sectionNumber+1)) * 5) * 25}px)`,
+        transform: `translateX(${(sectionNumber % 2 == 0 ? 1 : -1) * Math.sin((levelNumber - (sectionNumber + 1)) * 5) * 25}px)`,
       }}
     >
+      {isLocked ? "true" : "false"}
       <LessonIndicator
         animateProgress={false}
         isButton={true}
-        lessonNumber={currentLevel}
+        lessonNumber={currentLesson}
         levelNumber={levelNumber}
         locked={isLocked}
         sectionColor={sectionColor}
