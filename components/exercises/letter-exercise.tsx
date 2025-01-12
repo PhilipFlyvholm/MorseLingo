@@ -11,6 +11,10 @@ import PlayMorse from "../PlayMorse";
 
 import { ditSound, dahSound, convertToMorse } from "@/config/morse";
 import { BaseExerciseData, ExerciseWrapperProps } from "@/types";
+import { DahSymbol, DitSymbol } from "../icons";
+import { Icon } from "@iconify/react";
+import MorseArea from "../MorseArea";
+import MorseInput from "../Input/MorseInput";
 export interface LetterExerciseData extends BaseExerciseData {
   type: "letter";
   expected: string;
@@ -60,7 +64,7 @@ const LetterExercise: React.FC<LetterExerciseProps> = ({
 
   return (
     <div className="flex flex-col h-full w-full gap-2">
-      <div className="flex flex-row items-center justify-center mb-1">
+      <div className="flex flex-row items-center justify-center mb-5">
         <Card>
           <CardHeader>
             <h3 className="font-semibold text-foreground/90 px-5">
@@ -77,34 +81,16 @@ const LetterExercise: React.FC<LetterExerciseProps> = ({
           </CardBody>
         </Card>
       </div>
-      <Textarea
-        isReadOnly
-        className="w-full"
-        minRows={2}
-        placeholder="Type in morse"
-        value={text}
+      <MorseInput
+        canDelete={canDelete}
+        handleButtonPress={handleButtonPress}
+        handleDelete={handleDelete}
+        text={text}
       />
-      <div className="flex gap-1">
-        <InputButton buttonKey="." onPress={() => handleButtonPress("dit")}>
-          Dit (.)
-        </InputButton>
-
-        <InputButton buttonKey="-" onPress={() => handleButtonPress("dah")}>
-          Dah (-)
-        </InputButton>
-
-        <InputButton
-          buttonKey="Backspace"
-          disabled={!canDelete}
-          onPress={() => handleDelete()}
-        >
-          Back
-        </InputButton>
-      </div>
       <div className="flex my-5">
         <InputButton
           buttonKey="Enter"
-          className="font-bold uppercase text-white"
+          className="font-bold uppercase text-white w-full"
           color={text.length == 0 ? "default" : "success"}
           disabled={text.length == 0}
           onPress={() => handleSubmit()}

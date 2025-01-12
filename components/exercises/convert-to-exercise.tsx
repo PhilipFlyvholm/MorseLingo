@@ -10,6 +10,10 @@ import { InputButton } from "../buttons/InputButton";
 import { convertToMorse, dahSound, ditSound } from "@/config/morse";
 import { useAudio } from "@/components/hooks/Audio";
 import { BaseExerciseData, ExerciseWrapperProps } from "@/types";
+import { Icon } from "@iconify/react";
+import { DitSymbol, DahSymbol } from "../icons";
+import MorseArea from "../MorseArea";
+import MorseInput from "../Input/MorseInput";
 
 export interface ConvertToExerciseData extends BaseExerciseData {
   type: "convert-to";
@@ -104,30 +108,12 @@ const ConvertToExercise: React.FC<ConvertToProps> = ({
           </CardBody>
         </Card>
       </div>
-      <Textarea
-        isReadOnly
-        className="w-full"
-        minRows={2}
-        placeholder="Type in morse"
-        value={text}
+      <MorseInput
+        canDelete={canDelete}
+        handleButtonPress={handleButtonPress}
+        handleDelete={handleDelete}
+        text={text}
       />
-      <div className="flex gap-1">
-        <InputButton buttonKey="." onPress={() => handleButtonPress("dit")}>
-          Dit (.)
-        </InputButton>
-
-        <InputButton buttonKey="-" onPress={() => handleButtonPress("dah")}>
-          Dah (-)
-        </InputButton>
-
-        <InputButton
-          buttonKey="Backspace"
-          disabled={!canDelete}
-          onPress={() => handleDelete()}
-        >
-          Back
-        </InputButton>
-      </div>
     </div>
   );
 };

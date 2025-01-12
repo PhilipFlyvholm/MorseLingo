@@ -191,3 +191,80 @@ export const NextUILogo: React.FC<IconSvgProps> = (props) => {
     </svg>
   );
 };
+
+interface DitDahProps {
+  height?: number;
+  color?: string;
+  dropShadow?: boolean;
+  shadowColor?: string;
+  shadowOffset?: number;
+}
+export const DahSymbol = (props: DitDahProps) => {
+  const { color, height, dropShadow, shadowColor, shadowOffset } = {
+    color: "#0A68FF",
+    height: 20,
+    dropShadow: true,
+    shadowColor: "#3381FF",
+    shadowOffset: 4,
+
+    ...props,
+  };
+  const width = height * 3;
+
+  return (
+    <svg
+      fill="none"
+      height={height + shadowOffset}
+      viewBox={`0 0 ${width} ${height + shadowOffset}`}
+      width={width}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g>
+        {dropShadow && (
+          <rect
+            fill={shadowColor}
+            height={height + shadowOffset}
+            rx={height / 2}
+            width={width}
+          />
+        )}
+        <rect fill={color} height={height} rx={height / 2} width={width} />
+      </g>
+    </svg>
+  );
+};
+
+export const DitSymbol = (props: DitDahProps) => {
+  const { color, height, dropShadow, shadowColor, shadowOffset } = {
+    color: "#0A68FF",
+    height: 20,
+    dropShadow: true,
+    shadowColor: "#3381FF",
+    shadowOffset: 4,
+
+    ...props,
+  };
+
+  return (
+    <svg
+      fill="none"
+      height={height + shadowOffset}
+      viewBox={`0 0 ${height} ${height + shadowOffset}`}
+      width={height}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g>
+        {dropShadow && (
+          <circle
+            cx={height / 2}
+            cy={height / 2 + shadowOffset}
+            fill={shadowColor}
+            r={height / 2}
+          />
+        )}
+        {height / 2}
+        <circle cx={height / 2} cy={height / 2} fill={color} r={height / 2} />
+      </g>
+    </svg>
+  );
+};

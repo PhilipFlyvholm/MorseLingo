@@ -1,11 +1,12 @@
-import { Button } from "@nextui-org/button";
 import { Card, CardBody } from "@nextui-org/card";
 import { Link } from "@nextui-org/link";
 import Image from "next/image";
 
+import Button from "@/components/buttons/Button";
+
 export default function Home() {
   return (
-    <section className="flex flex-row items-center justify-center gap-4 py-8 md:py-10">
+    <section className="flex flex-col sm:flex-row items-center justify-center gap-4 py-8 md:py-10">
       <div>
         <Image
           alt="MorseLingo Logo"

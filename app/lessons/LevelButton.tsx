@@ -26,7 +26,7 @@ export default function LevelButton({
   const router = useRouter();
   const [lessonStorage] = useLocalStorage<LessonStorageData>(
     "lessonStorage",
-    {}
+    {},
   );
   const [isLocked, setIsLocked] = useState(true);
   const [currentLesson, setCurrentLessons] = useState<number>(0);
@@ -34,7 +34,7 @@ export default function LevelButton({
   useEffect(() => {
     const currentLesson =
       Number(
-        lessonStorage[`${sectionNumber}-${levelNumber}`]?.completedLevels
+        lessonStorage[`${sectionNumber}-${levelNumber}`]?.completedLevels,
       ) || 0;
 
     setCurrentLessons(currentLesson);
@@ -56,7 +56,7 @@ export default function LevelButton({
   const handleLessonClick = () => {
     if (isLocked) return;
     router.push(
-      `/lessons/${sectionNumber}/${levelNumber}/${Math.min(currentLesson + 1, level.length)}`
+      `/lessons/${sectionNumber}/${levelNumber}/${Math.min(currentLesson + 1, level.length)}`,
     );
   };
 

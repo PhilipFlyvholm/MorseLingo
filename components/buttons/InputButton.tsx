@@ -1,19 +1,12 @@
-import { Button } from "@nextui-org/button";
+import clsx from "clsx";
 import { useEffect } from "react";
+import { ButtonProps } from "@nextui-org/button";
 
-type InputButtonProps = {
+import Button from "./Button";
+
+type InputButtonProps = ButtonProps & {
   onPress: () => void;
-  children: React.ReactNode;
-  disabled?: boolean;
   buttonKey?: string;
-  color?:
-    | "default"
-    | "primary"
-    | "secondary"
-    | "success"
-    | "warning"
-    | "danger";
-  className?: string;
 };
 
 export function InputButton({
@@ -38,7 +31,8 @@ export function InputButton({
 
   return (
     <Button
-      className={`flex-1 py-1 ${props.className}`}
+      {...props}
+      className={clsx("py-1", props.className)}
       color={color}
       isDisabled={props.disabled}
       onPress={props.onPress}

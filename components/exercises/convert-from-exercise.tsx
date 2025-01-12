@@ -69,6 +69,7 @@ const ConvertFromExercise: React.FC<ConvertFromProps> = ({
           className="w-full"
           minRows={2}
           placeholder="Type in English"
+          style={{ fontSize: "16px" }}
           value={text}
           onValueChange={setText}
         />
