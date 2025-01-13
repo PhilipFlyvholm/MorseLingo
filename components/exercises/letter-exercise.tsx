@@ -1,6 +1,5 @@
 "use client";
 
-import { Textarea } from "@nextui-org/input";
 import { useMemo, useState } from "react";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
@@ -8,13 +7,10 @@ import { Divider } from "@nextui-org/divider";
 import { InputButton } from "../buttons/InputButton";
 import { useAudio } from "../hooks/Audio";
 import PlayMorse from "../PlayMorse";
-
-import { ditSound, dahSound, convertToMorse } from "@/config/morse";
-import { BaseExerciseData, ExerciseWrapperProps } from "@/types";
-import { DahSymbol, DitSymbol } from "../icons";
-import { Icon } from "@iconify/react";
-import MorseArea from "../MorseArea";
 import MorseInput from "../Input/MorseInput";
+
+import { BaseExerciseData, ExerciseWrapperProps } from "@/types";
+import { ditSound, dahSound, convertToMorse } from "@/config/morse";
 export interface LetterExerciseData extends BaseExerciseData {
   type: "letter";
   expected: string;

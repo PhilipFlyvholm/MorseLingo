@@ -1,9 +1,7 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@nextui-org/button";
 import { Icon } from "@iconify/react";
-
-import { useAudio } from "./hooks/Audio";
 
 import { ditSound, dahSound, convertToMorse } from "@/config/morse";
 interface PlayMorseProps {
@@ -12,103 +10,164 @@ interface PlayMorseProps {
   volume?: number;
 }
 
-const DELAY = 250;
+const useAudioContext = () => {
+  const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
+
+  useEffect(() => {
+    const context = new (window.AudioContext ||
+      (window as any).webkitAudioContext)();
+
+    setAudioContext(context);
+
+    return () => {
+      context.close();
+    };
+  }, []);
+
+  return audioContext;
+};
+
+const useAudioBuffer = (
+  audioContext: AudioContext | null,
+  base64: string,
+  volume = 1,
+  speed = 1,
+) => {
+  const [audioBuffer, setAudioBuffer] = useState<AudioBuffer | null>(null);
+
+  useEffect(() => {
+    if (!audioContext) return;
+
+    const fetchData = async () => {
+      const response = await fetch(base64);
+      const arrayBuffer = await response.arrayBuffer();
+      const buffer = await audioContext.decodeAudioData(arrayBuffer);
+
+      setAudioBuffer(buffer);
+    };
+
+    fetchData();
+  }, [audioContext, base64]);
+
+  const playSound = (callback: () => void) => {
+    if (!audioContext) return;
+
+    const source = audioContext.createBufferSource();
+
+    source.buffer = audioBuffer;
+    const gainNode = audioContext.createGain();
+
+    gainNode.gain.value = volume;
+    source.playbackRate.value = speed;
+    source.connect(gainNode).connect(audioContext.destination);
+    source.start();
+    source.onended = callback;
+  };
+
+  return [playSound, audioBuffer] as const;
+};
 
 export default function PlayMorse({
   text,
   volume = 1,
   speed = 1,
 }: PlayMorseProps) {
-  const ditAudio = useAudio(`data:audio/wav;base64,${ditSound}`, {
-    volume: volume,
-    playbackRate: speed,
-  });
-  const dahAudio = useAudio(`data:audio/wav;base64,${dahSound}`, {
-    volume: volume,
-    playbackRate: speed,
-  });
-  const [playing, setPlaying] = useState<boolean>(false);
-  const [morse, setMorse] = useState<string>("");
-  const [index, setIndex] = useState<number>(0);
-
-  const playCurrent = useCallback(
-    (currentIndex: number) => {
-      if (currentIndex >= morse.length) {
-        setPlaying(false);
-        setIndex(0);
-
-        return;
-      }
-
-      const current = morse[currentIndex];
-
-      if (current === " " || current === "/") {
-        setIndex(currentIndex + 1);
-        setTimeout(
-          () => playCurrent(currentIndex + 1),
-          current === "/" ? 3 * DELAY : DELAY,
-        );
-
-        return;
-      }
-
-      if (current === ".") {
-        ditAudio?.play();
-      } else if (current === "-") {
-        dahAudio?.play();
-      }
-
-      setIndex(currentIndex + 1);
-    },
-    [morse, ditAudio, dahAudio],
+  const audioContext = useAudioContext();
+  const [playDitAudio, ditBuffer] = useAudioBuffer(
+    audioContext,
+    `data:audio/wav;base64,${ditSound}`,
+    volume,
+    speed,
+  );
+  const [playDahAudio] = useAudioBuffer(
+    audioContext,
+    `data:audio/wav;base64,${dahSound}`,
+    volume,
+    speed,
+  );
+  const ditDuration = useMemo(
+    () => (ditBuffer?.duration || 0.25) * 1000,
+    [ditBuffer],
   );
 
-  const playMorse = () => {
-    if (playing) {
-      setPlaying(false);
+  const [queue, setQueue] = useState<("DIT" | "DAH" | "BREAK")[]>([]);
+
+  const playCurrent = useCallback(() => {
+    if (queue.length === 0) {
+      return [];
+    }
+
+    const current = queue[0];
+
+    if (current === "BREAK") {
+      setTimeout(() => {
+        setQueue((queue) => queue.slice(1));
+      }, ditDuration * 3);
 
       return;
     }
-    setPlaying(true);
-    setIndex(0);
-    playCurrent(0);
+
+    if (current === "DIT") {
+      playDitAudio(() =>
+        setTimeout(() => {
+          setQueue((queue) => queue.slice(1));
+        }, ditDuration),
+      );
+    } else if (current === "DAH") {
+      playDahAudio(() =>
+        setTimeout(() => {
+          setQueue((queue) => queue.slice(1));
+        }, ditDuration),
+      );
+    }
+  }, [playDitAudio, playDahAudio]);
+
+  const playMorse = () => {
+    if (queue.length > 0) {
+      setQueue([]);
+
+      return;
+    }
+
+    const morse = convertToMorse(text);
+
+    for (let i = 0; i < morse.length; i++) {
+      const current = morse[i];
+
+      if (current === " ") {
+        setQueue((prev) => [...prev, "BREAK"]);
+      } else if (current === "/") {
+        setQueue((prev) => [...prev, "BREAK", "BREAK"]);
+      } else {
+        setQueue((prev) => [...prev, current === "." ? "DIT" : "DAH"]);
+      }
+    }
+    playCurrent();
   };
 
-  const handleEnd = useCallback(() => {
-    if (!playing) return;
-    playCurrent(index);
-  }, [playCurrent, index, playing]);
-
   useEffect(() => {
-    setMorse(convertToMorse(text));
-  }, [text]);
-
-  useEffect(() => {
-    ditAudio?.addEventListener("ended", handleEnd);
-    dahAudio?.addEventListener("ended", handleEnd);
-
-    return () => {
-      ditAudio?.removeEventListener("ended", handleEnd);
-      dahAudio?.removeEventListener("ended", handleEnd);
-    };
-  }, [ditAudio, dahAudio, handleEnd]);
+    if (queue.length > 0) {
+      playCurrent();
+    }
+  }, [queue, playCurrent]);
 
   return (
-    <Button
-      isIconOnly
-      aria-label={`Play Morse Code of ${text}`}
-      color="primary"
-      disabled={playing}
-      variant="flat"
-      onPress={playMorse}
-    >
-      <Icon
-        icon={
-          !playing || index % 3 < 2
-            ? "streamline:volume-level-high"
-            : "streamline:volume-level-low"
-        }
-      />
-    </Button>
+    <>
+      <Button
+        isIconOnly
+        aria-label={`Play Morse Code of ${text}`}
+        color="primary"
+        variant="flat"
+        onPress={playMorse}
+      >
+        <Icon
+          icon={
+            queue.length == 0 || queue.length % 3 < 2
+              ? "streamline:volume-level-high"
+              : "streamline:volume-level-low"
+          }
+        />
+      </Button>
+    </>
   );
 }

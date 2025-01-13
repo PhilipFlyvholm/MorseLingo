@@ -60,6 +60,7 @@ export default function LessonIndicator({
     >
       {isButton ? (
         <button
+          aria-label="Go to lesson"
           className={`${style} ${locked ? "cursor-not-allowed" : buttonStyle}`}
           onClick={locked ? undefined : props.onClick}
         >
@@ -72,6 +73,7 @@ export default function LessonIndicator({
       )}
       {!locked ? (
         <CircularProgress
+          aria-label="Lesson progress"
           classNames={{
             base: "col-span-full row-span-full",
             svg: "w-24 h-24 drop-shadow-md",

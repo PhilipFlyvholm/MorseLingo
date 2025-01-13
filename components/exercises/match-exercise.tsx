@@ -3,6 +3,7 @@ import { Button } from "@nextui-org/button";
 import { useEffect, useState } from "react";
 
 import { convertToMorse } from "../../config/morse";
+import MorseText from "../MorseText";
 
 import { BaseExerciseData, ExerciseWrapperProps } from "@/types";
 export interface MatchExerciseData extends BaseExerciseData {
@@ -125,7 +126,22 @@ const MatchExercise: React.FC<MatchExerciseProps> = ({
               variant={getVariant(word, "right")}
               onPress={() => select(word, "right")}
             >
-              {convertToMorse(word)}
+              <MorseText
+                backgroundColor="none"
+                color={
+                  selected["right"] === word
+                    ? "white"
+                    : "hsl(var(--nextui-default-800))"
+                }
+                height={7}
+                shadowColor={
+                  selected["right"] === word
+                    ? "hsl(var(--nextui-default-400))"
+                    : "hsl(var(--nextui-default-600))"
+                }
+                shadowOffset={1}
+                value={convertToMorse(word)}
+              />
             </Button>
           ))}
         </div>

@@ -31,12 +31,14 @@ export default function LessonView({
   const [index, setIndex] = useState(0);
   const [_lessonStorage, setLessonStorage] = useLocalStorage<LessonStorageData>(
     "lessonStorage",
-    {},
+    {}
   );
   const handleComplete = () => {
     setIndex(index + 1);
+    if (window !== undefined) {
+      window.scrollTo(0, 0);
+    }
     if (index + 1 == lesson.length) {
-      console.log("Lesson complete");
       const key = `${sectionNumber}-${levelNumber}`;
 
       const newStorage = {

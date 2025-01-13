@@ -14,6 +14,7 @@ export const useAudio = (src: string, { volume = 1, playbackRate = 1 }) => {
   useEffect(() => {
     if (!audio.current) return;
     audio.current.playbackRate = playbackRate;
+    audio.current.preload = "auto";
   }, [playbackRate, audio.current]);
 
   return audio.current;

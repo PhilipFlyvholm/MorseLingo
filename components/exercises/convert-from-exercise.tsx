@@ -10,6 +10,9 @@ import { convertToMorse } from "../../config/morse";
 import PlayMorse from "../PlayMorse";
 
 import { BaseExerciseData, ExerciseWrapperProps } from "@/types";
+import clsx from "clsx";
+import { DitSymbol, DahSymbol } from "../icons";
+import MorseText from "../MorseText";
 export interface ConvertFromExerciseData extends BaseExerciseData {
   type: "convert-from";
   expected: string;
@@ -49,7 +52,14 @@ const ConvertFromExercise: React.FC<ConvertFromProps> = ({
         />
         <Card>
           <CardBody className="flex flex-row gap-2 items-center justify-center px-5">
-            <p className="font-semibold">
+            <div
+              className={clsx(
+                "flex flex-row gap-1 flex-wrap w-full items-center",
+              )}
+            >
+              <MorseText value={convertToMorse(expected)} />
+            </div>
+            <p className="font-semibold hidden">
               {convertToMorse(expected)
                 .split("/")
                 .map((s, i) => (

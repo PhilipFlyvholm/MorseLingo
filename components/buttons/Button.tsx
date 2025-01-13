@@ -12,6 +12,7 @@ export default function CustomButton({
   return (
     <NextUIButton
       {...props}
+      aria-label="button"
       className={clsx(
         props.className,
         "shadow-[0px_4px_0px]",

@@ -4,7 +4,7 @@ import clsx from "clsx";
 
 import { convertToMorse } from "../config/morse";
 
-import { DahSymbol, DitSymbol } from "./icons";
+import MorseText from "./MorseText";
 
 interface MorseAreaProps {
   value: string;
@@ -48,26 +48,15 @@ export default function MorseArea({
             center && "justify-center",
           )}
         >
-          {value &&
-            (isMorse ? value : convertToMorse(value))
-              .split("")
-              .map((char, i) => (
-                <span key={i} className="my-[4px]">
-                  {char == "." ? (
-                    <DitSymbol
-                      color={"hsl(var(--nextui-secondary))"}
-                      shadowColor="hsl(var(--nextui-secondary-400))"
-                    />
-                  ) : char == "-" ? (
-                    <DahSymbol
-                      color={"hsl(var(--nextui-secondary))"}
-                      shadowColor="hsl(var(--nextui-secondary-400))"
-                    />
-                  ) : (
-                    " "
-                  )}
-                </span>
-              ))}
+          {value && (
+            <MorseText
+              color="hsl(var(--nextui-secondary-600))"
+              height={16}
+              shadowColor="hsl(var(--nextui-secondary-200))"
+              shadowOffset={2}
+              value={isMorse ? value : convertToMorse(value)}
+            />
+          )}
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ export default function LessonProgress({ value }: LessonProgressProps) {
   return (
     <div className="flex flex-row items-center gap-2">
       <Progress
+        aria-label="Current lesson progress"
         classNames={{
           base: "w-full",
           track: "drop-shadow-md border border-default",
