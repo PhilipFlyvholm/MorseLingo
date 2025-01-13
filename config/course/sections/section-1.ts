@@ -132,6 +132,7 @@ const level1: Level = [
     },
   ],
   [
+    //Lesson 2 (Learn R)
     {
       type: "letter",
       expected: "M",
@@ -153,10 +154,163 @@ const level1: Level = [
       expected: "ROAST",
     },
   ],
+  [
+    // Lesson 4 (Learn W and G)
+    { type: "letter", expected: "W" },
+    {
+      type: "convert-from",
+      expected: "W",
+    },
+    { type: "letter", expected: "G" },
+    {
+      type: "convert-from",
+      expected: "G",
+    },
+    {
+      type: "convert-to",
+      expected: "GROW",
+    },
+  ],
+  [
+    // Lesson 5 (Recap)
+    {
+      type: "convert-from",
+      expected: "GROW",
+    },
+    {
+      type: "choice",
+      expected: "A",
+      choices: ["W", "A", "N", "E"],
+    },
+    {
+      type: "convert-to",
+      expected: "SOS",
+    },
+    {
+      type: "match",
+      expected: ["grow", "sos", "roast", "steam", "eat"],
+    },
+  ],
 ];
 
-// A   E  HI   MNO  RST
+// A   E GHI   MNO  RST  W
 // ABCDEFGHIJKLMNOPQRSTUVWXYZ
-const section: Section = [Level0, level1];
+
+const level2: Level = [
+  [
+    // Lesson 1 (Learn D)
+    { type: "letter", expected: "D" },
+    {
+      type: "convert-from",
+      expected: "D",
+    },
+    {
+      type: "convert-from",
+      expected: "W",
+    },
+    {
+      type: "convert-to",
+      expected: "DAD",
+    },
+    {
+      type: "convert-to",
+      expected: "WON",
+    },
+  ],
+  [
+    // Lesson 2 (Learn U and K)
+    { type: "letter", expected: "U" },
+    {
+      type: "convert-from",
+      expected: "U",
+    },
+    { type: "letter", expected: "K" },
+    {
+      type: "convert-from",
+      expected: "K",
+    },
+    {
+      type: "convert-to",
+      expected: "DUKE",
+    },
+  ],
+  [
+    // Lesson 3 (Learn b)
+    {
+      type: "match",
+      expected: ["duke", "won", "dad", "grow", "heat"],
+    },
+    {
+      type: "letter",
+      expected: "B",
+    },
+    {
+      type: "convert-to",
+      expected: "B",
+    },
+    {
+      type: "convert-to",
+      expected: "bat",
+    },
+    {
+      type: "match",
+      expected: ["grow", "bat", "roast", "steam", "bot"],
+    },
+  ],
+  [
+    // Lesson 4 (listen round)
+    {
+      type: "choice",
+      expected: "W",
+      choices: ["W", "K", "I", "B"],
+    },
+    {
+      type: "choice",
+      expected: "I",
+      choices: ["I", "W", "K", "B"],
+    },
+    {
+      type: "choice",
+      expected: "K",
+      choices: ["K", "B", "I", "W"],
+    },
+    {
+      type: "choice",
+      expected: "B",
+      choices: ["W", "B", "I", "K"],
+    },
+    {
+      type: "match",
+      expected: ["throw", "SOS", "toast", "steam", "bot"],
+    },
+  ],
+  [
+    // Lesson 5 (Recap)
+    {
+      type: "match",
+      expected: ["duke", "won", "dad", "grow", "heat"],
+    },
+    {
+      type: "match",
+      expected: ["grow", "bat", "roast", "steam", "bot"],
+    },
+    {
+      type: "convert-from",
+      expected: "DUKE",
+    },
+    {
+      type: "convert-to",
+      expected: "bot",
+    },
+    {
+      type: "match",
+      expected: ["mine", "ate", "the", "nine", "heat"],
+    },
+  ],
+];
+
+// AB DE GHI K MNO  RSTU W
+// ABCDEFGHIJKLMNOPQRSTUVWXYZ
+const section: Section = [Level0, level1, level2];
 
 export default section;
