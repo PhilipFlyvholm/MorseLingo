@@ -6,16 +6,14 @@ import Button from "@/components/buttons/Button";
 
 export default function Home() {
   return (
-    <section className="flex flex-col sm:flex-row items-center justify-center gap-4 py-8 md:py-10">
-      <div>
-        <Image
-          alt="MorseLingo Logo"
-          className="-scale-x-100"
-          height={100 * 1.2051948052}
-          src={"/Mascot_transparent.webp"}
-          width={100}
-        />
-      </div>
+    <section className="flex flex-col sm:flex-row items-center justify-center gap-4 py-0 md:py-10">
+      <Image
+        alt="MorseLingo Logo"
+        className="max-w-[300px] w-[50%]"
+        height={910}
+        src={"/Front_page_graphic.png"}
+        width={512}
+      />
 
       <Card className="p-5">
         <CardBody className="flex flex-col gap-4 justify-center">
