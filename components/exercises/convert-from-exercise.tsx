@@ -5,14 +5,13 @@ import { Textarea } from "@nextui-org/input";
 import { Form } from "@nextui-org/form";
 import { FormEvent, useState } from "react";
 import { Button } from "@nextui-org/button";
+import clsx from "clsx";
 
 import { convertToMorse } from "../../config/morse";
 import PlayMorse from "../PlayMorse";
+import MorseText from "../MorseText";
 
 import { BaseExerciseData, ExerciseWrapperProps } from "@/types";
-import clsx from "clsx";
-import { DitSymbol, DahSymbol } from "../icons";
-import MorseText from "../MorseText";
 export interface ConvertFromExerciseData extends BaseExerciseData {
   type: "convert-from";
   expected: string;
@@ -47,7 +46,11 @@ const ConvertFromExercise: React.FC<ConvertFromProps> = ({
           alt="MorseLingo Logo"
           className="-scale-x-100"
           height={75 * 1.2051948052}
-          src={"/Mascot_transparent.webp"}
+          src={
+            expected.length % 2 == 0
+              ? "/Captain_Patches.webp"
+              : "/Mascot_transparent.webp"
+          }
           width={75}
         />
         <Card>
@@ -69,6 +72,7 @@ const ConvertFromExercise: React.FC<ConvertFromProps> = ({
                 ))}
             </p>
             <PlayMorse text={expected} />
+            <PlayMorse slow={true} text={expected} />
           </CardBody>
         </Card>
       </div>

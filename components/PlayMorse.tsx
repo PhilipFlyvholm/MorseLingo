@@ -6,7 +6,7 @@ import { Icon } from "@iconify/react";
 import { ditSound, dahSound, convertToMorse } from "@/config/morse";
 interface PlayMorseProps {
   text: string;
-  speed?: number;
+  slow?: boolean;
   volume?: number;
 }
 
@@ -31,7 +31,7 @@ const useAudioBuffer = (
   audioContext: AudioContext | null,
   base64: string,
   volume = 1,
-  speed = 1,
+  speed = 1
 ) => {
   const [audioBuffer, setAudioBuffer] = useState<AudioBuffer | null>(null);
 
@@ -70,24 +70,24 @@ const useAudioBuffer = (
 export default function PlayMorse({
   text,
   volume = 1,
-  speed = 1,
+  slow = false,
 }: PlayMorseProps) {
   const audioContext = useAudioContext();
   const [playDitAudio, ditBuffer] = useAudioBuffer(
     audioContext,
     `data:audio/wav;base64,${ditSound}`,
-    volume,
-    speed,
+    1,
+    slow ? 0.5 : 1
   );
   const [playDahAudio] = useAudioBuffer(
     audioContext,
     `data:audio/wav;base64,${dahSound}`,
-    volume,
-    speed,
+    1,
+    slow ? 0.5 : 1
   );
   const ditDuration = useMemo(
     () => (ditBuffer?.duration || 0.25) * 1000,
-    [ditBuffer],
+    [ditBuffer]
   );
 
   const [queue, setQueue] = useState<("DIT" | "DAH" | "BREAK")[]>([]);
@@ -96,7 +96,6 @@ export default function PlayMorse({
     if (queue.length === 0) {
       return [];
     }
-
     const current = queue[0];
 
     if (current === "BREAK") {
@@ -111,13 +110,13 @@ export default function PlayMorse({
       playDitAudio(() =>
         setTimeout(() => {
           setQueue((queue) => queue.slice(1));
-        }, ditDuration),
+        }, ditDuration)
       );
     } else if (current === "DAH") {
       playDahAudio(() =>
         setTimeout(() => {
           setQueue((queue) => queue.slice(1));
-        }, ditDuration),
+        }, ditDuration)
       );
     }
   }, [playDitAudio, playDahAudio]);
@@ -156,15 +155,21 @@ export default function PlayMorse({
       <Button
         isIconOnly
         aria-label={`Play Morse Code of ${text}`}
+        className={!slow ? "scale-110" : "scale-90"}
         color="primary"
         variant="flat"
         onPress={playMorse}
       >
         <Icon
+          fontSize={18}
           icon={
-            queue.length == 0 || queue.length % 3 < 2
-              ? "streamline:volume-level-high"
-              : "streamline:volume-level-low"
+            queue.length == 0
+              ? slow
+                ? "fluent:slow-mode-24-regular"
+                : "streamline:volume-level-high"
+              : queue.length % 3 < 2
+                ? "streamline:volume-level-high"
+                : "streamline:volume-level-low"
           }
         />
       </Button>

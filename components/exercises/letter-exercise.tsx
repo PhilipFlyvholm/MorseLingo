@@ -73,7 +73,10 @@ const LetterExercise: React.FC<LetterExerciseProps> = ({
             <h2 className="text-3xl font-bold uppercase text-center border-secondary-500 border-5 p-3 w-[4.5rem] h-[4.5rem] rounded-full aspect-square shadow-lg">
               {expected[0]}
             </h2>
-            <PlayMorse text={expected[0]} />
+            <div className="flex flex-col flex-wrap gap-1.5">
+              <PlayMorse text={expected[0]} />
+              <PlayMorse slow={true} text={expected} />
+            </div>
           </CardBody>
         </Card>
       </div>

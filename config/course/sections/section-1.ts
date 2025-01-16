@@ -311,6 +311,150 @@ const level2: Level = [
 
 // AB DE GHI K MNO  RSTU W
 // ABCDEFGHIJKLMNOPQRSTUVWXYZ
-const section: Section = [Level0, level1, level2];
+
+const level3: Level = [
+  [
+    // Lesson 1 (Learn L and f)
+    { type: "letter", expected: "L" },
+    {
+      type: "convert-from",
+      expected: "L",
+    },
+    { type: "letter", expected: "F" },
+    {
+      type: "convert-from",
+      expected: "F",
+    },
+    {
+      type: "convert-to",
+      expected: "FALL",
+    },
+  ],
+  [
+    // Small recap / continue
+    {
+      type: "convert-from",
+      expected: "FALL",
+    },
+    {
+      type: "convert-to",
+      expected: "bot",
+    },
+    {
+      type: "match",
+      expected: ["fall", "bot", "dad", "false", "mine"],
+    },
+    {
+      type: "choice",
+      expected: "F",
+      choices: ["B", "L", "F", "K"],
+    },
+    {
+      type: "choice",
+      expected: "L",
+      choices: ["B", "L", "F", "K"],
+    },
+  ],
+  [
+    // Lesson 3 (Learn P and Y)
+    { type: "letter", expected: "P" },
+    {
+      type: "convert-from",
+      expected: "P",
+    },
+    { type: "letter", expected: "Y" },
+    {
+      type: "convert-from",
+      expected: "Y",
+    },
+    {
+      type: "convert-to",
+      expected: "PLAY",
+    },
+  ],
+  [
+    // Lesson 4 (Learn Q)
+    { type: "letter", expected: "Q" },
+    {
+      type: "convert-from",
+      expected: "Q",
+    },
+    {
+      type: "convert-to",
+      expected: "Q",
+    },
+    {
+      type: "convert-to",
+      expected: "Q",
+    },
+  ],
+  [
+    // Lesson 5 (Recap)
+    {
+      type: "match",
+      expected: ["fall", "bot", "heat", "help", "same"],
+    },
+    {
+      type: "match",
+      expected: ["play", "bat", "roast", "steam", "bot"],
+    },
+    {
+      type: "convert-from",
+      expected: "PLAY",
+    },
+    {
+      type: "convert-to",
+      expected: "bot",
+    },
+    {
+      type: "match",
+      expected: ["mine", "help", "there", "nine", "heat"],
+    },
+  ],
+];
+
+const level4: Level = [
+  [
+    // Lesson 1 (Learn J and Z)
+    { type: "letter", expected: "J" },
+    {
+      type: "convert-from",
+      expected: "J",
+    },
+    { type: "letter", expected: "Z" },
+    {
+      type: "convert-from",
+      expected: "Z",
+    },
+    {
+      type: "convert-to",
+      expected: "JAZZ",
+    },
+  ],
+  [
+    // Lesson 2 (Learn V)
+    { type: "letter", expected: "V" },
+    {
+      type: "convert-from",
+      expected: "V",
+    },
+    {
+      type: "convert-to",
+      expected: "V",
+    },
+    {
+      type: "convert-from",
+      expected: "U",
+    },
+    {
+      type: "convert-to",
+      expected: "VALUE",
+    },
+  ],
+];
+
+// AB DEFGHI KLMNOP RSTU W Y
+// ABCDEFGHIJKLMNOPQRSTUVWXYZ
+const section: Section = [Level0, level1, level2, level3, level4];
 
 export default section;

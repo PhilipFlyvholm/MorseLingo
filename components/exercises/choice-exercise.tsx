@@ -45,6 +45,7 @@ const LetterExercise: React.FC<ChoiceExerciseProps> = ({
           <Divider />
           <CardBody className="flex flex-row items-center justify-center gap-3 px-2 py-5">
             <PlayMorse text={expected} />
+            <PlayMorse slow={true} text={expected} />
           </CardBody>
         </Card>
       </div>
