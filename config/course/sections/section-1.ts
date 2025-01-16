@@ -451,9 +451,74 @@ const level4: Level = [
       expected: "VALUE",
     },
   ],
+  [
+    // Lesson 3 (Recap)
+    {
+      type: "match",
+      expected: ["jazz", "value", "heat", "help", "same"],
+    },
+    {
+      type: "convert-from",
+      expected: "VALUE",
+    },
+    {
+      type: "convert-to",
+      expected: "bot",
+    },
+    {
+      type: "match",
+      expected: ["mine", "help", "there", "nine", "heat"],
+    },
+    {
+      type: "letter",
+      expected: "Z",
+    },
+  ],
+  [
+    // Lesson 4 (Learn X and C)
+    { type: "letter", expected: "X" },
+    {
+      type: "convert-from",
+      expected: "X",
+    },
+    { type: "letter", expected: "C" },
+    {
+      type: "convert-from",
+      expected: "C",
+    },
+    {
+      type: "convert-to",
+      expected: "exact",
+    },
+  ],
+  [
+    // Lesson 5 (Recap)
+    {
+      type: "match",
+      expected: ["jazz", "value", "heat", "help", "same"],
+    },
+    {
+      type: "choice",
+      expected: "Z",
+      choices: ["Z", "X", "C", "V"],
+    },
+    {
+      type: "choice",
+      expected: "J",
+      choices: ["A", "J", "F", "V"],
+    },
+    {
+      type: "match",
+      expected: ["mine", "help", "there", "nine", "heat"],
+    },
+    {
+      type: "match",
+      expected: ["duke", "won", "dad", "grow", "heat"],
+    },
+  ],
 ];
 
-// AB DEFGHI KLMNOP RSTU W Y
+// ABCDEFGHIJKLMNOPQRSTUVWXYZ
 // ABCDEFGHIJKLMNOPQRSTUVWXYZ
 const section: Section = [Level0, level1, level2, level3, level4];
 
